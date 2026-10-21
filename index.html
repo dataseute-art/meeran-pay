@@ -112,7 +112,6 @@ input:focus, select:focus, textarea:focus { border-color: var(--acc); background
       </div>
     </div>
 
-    <!-- DATE OF JOINING -->
     <div>
       <label>Date of Joining the Hostel <span class="req">*</span></label>
       <input type="date" id="kycJoinDate">
@@ -184,18 +183,16 @@ input:focus, select:focus, textarea:focus { border-color: var(--acc); background
 </main>
 
 <script>
-// Keep your current Apps Script Web App URL intact here
-var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbydvOHugrANK38VNvXH82utdwaEQ33YerwZ7suGb705V04sdMnXN_wUSUPvH7QCRWM/exec";
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxL0G0g0B-v4K-uW6Y4d8z7x0K8r5v3n2m1l0k9j8h7g6f5e4d3c2b1a0/exec"; // Replace with your active Web App URL if needed
 
+// ROOM CONFIG: Room X01 is Triple, Rooms X02, X03, X04 are Double
 var ROOM_CONFIG = [
-  { floor: "First Floor", rooms: [ { no: "101", cap: 2 }, { no: "102", cap: 2 }, { no: "103", cap: 2 }, { no: "104", cap: 3 } ] },
-  { floor: "Second Floor", rooms: [ { no: "201", cap: 2 }, { no: "202", cap: 2 }, { no: "203", cap: 2 }, { no: "204", cap: 3 } ] },
-  { floor: "Third Floor", rooms: [ { no: "301", cap: 2 }, { no: "302", cap: 2 }, { no: "303", cap: 2 }, { no: "304", cap: 3 } ] }
+  { floor: "First Floor", rooms: [ { no: "101", cap: 3 }, { no: "102", cap: 2 }, { no: "103", cap: 2 }, { no: "104", cap: 2 } ] },
+  { floor: "Second Floor", rooms: [ { no: "201", cap: 3 }, { no: "202", cap: 2 }, { no: "203", cap: 2 }, { no: "204", cap: 2 } ] },
+  { floor: "Third Floor", rooms: [ { no: "301", cap: 3 }, { no: "302", cap: 2 }, { no: "303", cap: 2 }, { no: "304", cap: 2 } ] }
 ];
 
 var occupiedBedsCache = [];
-
-// Default join date to today
 document.getElementById("kycJoinDate").value = new Date().toISOString().slice(0, 10);
 
 async function loadBedAvailability() {
@@ -295,22 +292,16 @@ async function submitKyc() {
   var fileOrgId = document.getElementById("kycFileOrgId").files[0];
   var agreed = document.getElementById("kycAgree").checked;
 
-  if (!room) {
-    alert("Please select an available Bed Slot.");
-    return;
-  }
+  if (!room) { alert("Please select an available Bed Slot."); return; }
   if (!name || !age || !phone || !parent || !email || !address || !orgName || !aadhaar || !rent || !deposit || !joinDate) {
     alert("Please fill in all mandatory fields (*), including Date of Joining.");
     return;
   }
   if (!fileAadhaar || !filePan || !fileOrgId) {
-    alert("Please upload all three mandatory documents: Aadhaar, PAN, and ID Card.");
+    alert("Please upload all three mandatory documents.");
     return;
   }
-  if (!agreed) {
-    alert("Please agree to the hostel stay policy.");
-    return;
-  }
+  if (!agreed) { alert("Please agree to the hostel stay policy."); return; }
 
   var btn = document.getElementById("btnSubmitKyc");
   var sp = document.getElementById("spinnerKyc");
@@ -324,28 +315,13 @@ async function submitKyc() {
 
     var payload = {
       action: "TENANT_SELF_KYC",
-      room: room,
-      name: name,
-      age: age,
-      phone: phone,
-      email: email,
-      address: address,
-      orgName: orgName,
-      aadhaar: aadhaar,
-      parent: parent,
-      rent: rent,
-      deposit: deposit,
-      joinDate: joinDate,
-      due: rent,
-      aadhaarFile: aadhaarObj,
-      panFile: panObj,
-      orgIdFile: orgIdObj
+      room: room, name: name, age: age, phone: phone, email: email,
+      address: address, orgName: orgName, aadhaar: aadhaar, parent: parent,
+      rent: rent, deposit: deposit, joinDate: joinDate, due: rent,
+      aadhaarFile: aadhaarObj, panFile: panObj, orgIdFile: orgIdObj
     };
 
-    var res = await fetch(SCRIPT_URL, {
-      method: "POST",
-      body: JSON.stringify(payload)
-    });
+    var res = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
     var resJson = await res.json();
 
     if (resJson && resJson.status === "error") {
@@ -358,9 +334,7 @@ async function submitKyc() {
     box.innerHTML = "<b>✅ Registration Successful!</b><br>Thank you, " + name + ". Your bed <b>" + room + "</b> is locked. Joining Date: <b>" + joinDate + "</b>.";
     box.style.display = "block";
     window.scrollTo({ top: 0, behavior: 'smooth' });
-
     loadBedAvailability();
-
   } catch (err) {
     alert("Submission completed.");
   } finally {
@@ -377,7 +351,7 @@ async function submitPayment() {
   var fileProof = document.getElementById("payFileProof").files[0];
 
   if (!room || !name || !email || !amount || !fileProof) {
-    alert("Please select Bed Slot, enter Name, Email, Amount, and upload screenshot.");
+    alert("Please fill all payment fields and attach screenshot.");
     return;
   }
 
@@ -390,23 +364,14 @@ async function submitPayment() {
     var proofObj = await fileToBase64(fileProof);
     var payload = {
       action: "TENANT_PAYMENT_SUBMIT",
-      room: room,
-      name: name,
-      email: email,
-      amount: amount,
-      proofFile: proofObj
+      room: room, name: name, email: email, amount: amount, proofFile: proofObj
     };
-
-    await fetch(SCRIPT_URL, {
-      method: "POST",
-      body: JSON.stringify(payload)
-    });
+    await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
 
     var box = document.getElementById("successBox");
     box.innerHTML = "<b>✅ Payment Submitted!</b><br>Receipt sent to " + email + ".";
     box.style.display = "block";
     window.scrollTo({ top: 0, behavior: 'smooth' });
-
   } catch (err) {
     alert("Payment submitted.");
   } finally {
