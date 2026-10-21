@@ -63,7 +63,7 @@ h2 { margin: 0 0 16px; font-size: 16px; font-weight: 700; color: var(--ink); dis
   margin: 18px 0 12px; font-weight: 700; font-size: 14px; color: var(--ink); border-radius: 0 8px 8px 0;
 }
 .floor-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 16px; }
-@media (max-width: 600px) { .floor-grid { grid-template-columns: 1fr; } }
+@media (max-width: 680px) { .floor-grid { grid-template-columns: 1fr; } }
 .room-card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
 .room-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
 .room-num { font-weight: 700; font-size: 15px; color: var(--ink); }
@@ -166,7 +166,7 @@ input, select { width: 100%; background: var(--panel); border: 1px solid var(--l
 
   <!-- VIEW 1: FLOOR MAP -->
   <section id="viewMap" class="section-box">
-    <h2><span>Floor &amp; Bed Matrix</span><span style="font-size:12px;color:var(--mute);font-weight:500">Tap any bed to manage occupant or admit</span></h2>
+    <h2><span>Floor &amp; Bed Matrix (27 Total Beds)</span><span style="font-size:12px;color:var(--mute);font-weight:500">Tap any bed to manage occupant or admit</span></h2>
     <div id="floorMapContainer"></div>
   </section>
 
@@ -176,7 +176,7 @@ input, select { width: 100%; background: var(--panel); border: 1px solid var(--l
     <div id="rosterList"></div>
   </section>
 
-  <!-- VIEW 3: FINANCIAL ANALYTICS (MONTHLY / QUARTERLY / ANNUAL) -->
+  <!-- VIEW 3: FINANCIAL ANALYTICS -->
   <section id="viewFin" class="section-box" style="display:none">
     <h2>
       <span>📊 Live Rent Revenue &amp; Financial Summary</span>
@@ -186,7 +186,6 @@ input, select { width: 100%; background: var(--panel); border: 1px solid var(--l
       </div>
     </h2>
 
-    <!-- KPI SUMMARY CARDS -->
     <div class="fin-grid">
       <div class="fin-card" style="border-left:4px solid var(--green)">
         <span>This Month Rent (MTD)</span>
@@ -210,7 +209,6 @@ input, select { width: 100%; background: var(--panel); border: 1px solid var(--l
       </div>
     </div>
 
-    <!-- QUARTERLY BREAKDOWN -->
     <h3 style="font-size:14px;margin:20px 0 10px;color:var(--ink)">Quarterly Rent Performance (Indian Fiscal Apr–Mar)</h3>
     <div style="overflow-x:auto">
       <table class="log-table" id="quarterTable">
@@ -227,7 +225,6 @@ input, select { width: 100%; background: var(--panel); border: 1px solid var(--l
       </table>
     </div>
 
-    <!-- MONTHLY BREAKDOWN -->
     <h3 style="font-size:14px;margin:24px 0 10px;color:var(--ink)">Month-by-Month Collection Summary</h3>
     <div style="overflow-x:auto">
       <table class="log-table" id="monthTable">
@@ -324,7 +321,7 @@ input, select { width: 100%; background: var(--panel); border: 1px solid var(--l
       <div><label>Joining Date</label><input id="editJoinDate" type="date"></div>
     </div>
     <div class="row">
-      <div><label>Assigned Bed (e.g. 101 - Bed A)</label><input id="editRoom"></div>
+      <div><label>Assigned Bed (e.g. 101 - Bed C)</label><input id="editRoom"></div>
       <div><label>Student Email</label><input id="editEmail" type="email"></div>
     </div>
     <button class="btn btn-green" style="width:100%;margin-top:14px;padding:11px" onclick="window.saveEditedProfile()">Save &amp; Update Cloud</button>
@@ -381,10 +378,11 @@ input, select { width: 100%; background: var(--panel); border: 1px solid var(--l
 </div>
 
 <script>
+// ROOM STRUCTURE: Room X01 is Triple Sharing, Rooms X02, X03, X04 are Double Sharing
 var HOSTEL_STRUCTURE = [
-  { floor: "First Floor", rooms: [ { no: "101", cap: 2, type: "Double" }, { no: "102", cap: 2, type: "Double" }, { no: "103", cap: 2, type: "Double" }, { no: "104", cap: 3, type: "Triple" } ] },
-  { floor: "Second Floor", rooms: [ { no: "201", cap: 2, type: "Double" }, { no: "202", cap: 2, type: "Double" }, { no: "203", cap: 2, type: "Double" }, { no: "204", cap: 3, type: "Triple" } ] },
-  { floor: "Third Floor", rooms: [ { no: "301", cap: 2, type: "Double" }, { no: "302", cap: 2, type: "Double" }, { no: "303", cap: 2, type: "Double" }, { no: "304", cap: 3, type: "Triple" } ] }
+  { floor: "First Floor", rooms: [ { no: "101", cap: 3, type: "Triple" }, { no: "102", cap: 2, type: "Double" }, { no: "103", cap: 2, type: "Double" }, { no: "104", cap: 2, type: "Double" } ] },
+  { floor: "Second Floor", rooms: [ { no: "201", cap: 3, type: "Triple" }, { no: "202", cap: 2, type: "Double" }, { no: "203", cap: 2, type: "Double" }, { no: "204", cap: 2, type: "Double" } ] },
+  { floor: "Third Floor", rooms: [ { no: "301", cap: 3, type: "Triple" }, { no: "302", cap: 2, type: "Double" }, { no: "303", cap: 2, type: "Double" }, { no: "304", cap: 2, type: "Double" } ] }
 ];
 var BED_LETTERS = ["A", "B", "C"];
 
@@ -609,9 +607,6 @@ window.renderFloorMap = function() {
   });
 };
 
-// ==========================================
-// FINANCIAL ANALYTICS ENGINE (MTD / QTD / FY)
-// ==========================================
 window.renderFinancials = function() {
   var nowKeys = getFiscalKeysJS(new Date().toISOString().slice(0, 10));
   var mtdRent = 0;
@@ -627,7 +622,6 @@ window.renderFinancials = function() {
     "Q4": { label: nowKeys.fyKey + " Q4", period: "Jan – Mar", rent: 0, dep: 0 }
   };
 
-  // Calculate expected monthly rent from active tenants
   var activeExpectedMonthly = 0;
   DB.forEach(function(t) {
     if (t && t.status === "Active") {
@@ -665,7 +659,6 @@ window.renderFinancials = function() {
     }
   });
 
-  // Always ensure current month exists in table
   if (!monthMap[nowKeys.monthKey]) monthMap[nowKeys.monthKey] = { rent: 0, dep: 0 };
 
   document.getElementById("finMTD").textContent = "₹" + mtdRent.toLocaleString("en-IN");
@@ -676,7 +669,6 @@ window.renderFinancials = function() {
   document.getElementById("finYTDLabel").textContent = nowKeys.fyKey;
   document.getElementById("finDeposits").textContent = "₹" + totalDeposits.toLocaleString("en-IN");
 
-  // Render Quarterly Table
   var qBody = document.getElementById("quarterTableBody");
   qBody.innerHTML = "";
   ["Q1", "Q2", "Q3", "Q4"].forEach(function(qCode) {
@@ -693,7 +685,6 @@ window.renderFinancials = function() {
     qBody.appendChild(tr);
   });
 
-  // Render Monthly Table
   var mBody = document.getElementById("monthTableBody");
   mBody.innerHTML = "";
   var sortedMonths = Object.keys(monthMap).sort().reverse();
