@@ -196,18 +196,17 @@ var occupiedBedsCache = [];
 document.getElementById("kycJoinDate").value = new Date().toISOString().slice(0, 10);
 
 async function loadBedAvailability() {
-  var kycSel = document.getElementById("kycRoomSelect");
-  kycSel.innerHTML = '<option value="">⏳ Checking live beds...</option>';
   try {
-    var res = await fetch(SCRIPT_URL + "?t=" + Date.now());
+    var res = await fetch(SCRIPT_URL);
     var json = await res.json();
-    if (json && json.status === "success") {
-      occupiedBedsCache = Array.isArray(json.occupiedBeds) ? json.occupiedBeds : [];
+    if (json && Array.isArray(json.occupiedBeds)) {
+      occupiedBedsCache = json.occupiedBeds;
     }
-    populateRooms();
   } catch(e) {
-    kycSel.innerHTML = '<option value="">⚠️ Cloud sync failed. Check SCRIPT_URL.</option>';
+    console.warn("Could not check live beds:", e);
   }
+  populateRooms();
+}
 
 function populateRooms() {
   var kycSel = document.getElementById("kycRoomSelect");
