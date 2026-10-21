@@ -112,6 +112,15 @@ input:focus, select:focus, textarea:focus { border-color: var(--acc); background
       </div>
     </div>
 
+    <!-- DATE OF JOINING -->
+    <div>
+      <label>Date of Joining the Hostel <span class="req">*</span></label>
+      <input type="date" id="kycJoinDate">
+      <small style="display:block;color:var(--mute);margin-top:-8px;margin-bottom:14px;font-size:12px;">
+        📌 Note: Your next month's rent cycle is calculated exactly 30 days from this joining date.
+      </small>
+    </div>
+
     <div class="file-box">
       <label>📄 Upload Aadhaar Card (Front &amp; Back) <span class="req">*</span></label>
       <span>Accepted: Photo (JPG/PNG) or PDF</span>
@@ -134,7 +143,8 @@ input:focus, select:focus, textarea:focus { border-color: var(--acc); background
       <div class="notice-header">⚠️ Hostel Stay Policy &amp; Terms</div>
       <div class="notice-text">
         • <b>One month notice period</b> is compulsory while leaving the hostel.<br>
-        • <b>Minimum 3 months stay</b> is mandatory.
+        • <b>Minimum 3 months stay</b> is mandatory.<br>
+        • Monthly rent is payable every 30 days from your joining date.
       </div>
       <label class="notice-check">
         <input type="checkbox" id="kycAgree" onchange="toggleKycSubmit()">
@@ -174,8 +184,8 @@ input:focus, select:focus, textarea:focus { border-color: var(--acc); background
 </main>
 
 <script>
-// Replace with your Google Apps Script URL from your dedicated account
-var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbydvOHugrANK38VNvXH82utdwaEQ33YerwZ7suGb705V04sdMnXN_wUSUPvH7QCRWM/exec";
+// Keep your current Apps Script Web App URL intact here
+var SCRIPT_URL = "YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
 
 var ROOM_CONFIG = [
   { floor: "First Floor", rooms: [ { no: "101", cap: 2 }, { no: "102", cap: 2 }, { no: "103", cap: 2 }, { no: "104", cap: 3 } ] },
@@ -184,6 +194,9 @@ var ROOM_CONFIG = [
 ];
 
 var occupiedBedsCache = [];
+
+// Default join date to today
+document.getElementById("kycJoinDate").value = new Date().toISOString().slice(0, 10);
 
 async function loadBedAvailability() {
   try {
@@ -275,6 +288,7 @@ async function submitKyc() {
   var aadhaar = document.getElementById("kycAadhaar").value.trim();
   var rent = parseFloat(document.getElementById("kycRent").value) || 0;
   var deposit = parseFloat(document.getElementById("kycDeposit").value) || 0;
+  var joinDate = document.getElementById("kycJoinDate").value;
 
   var fileAadhaar = document.getElementById("kycFileAadhaar").files[0];
   var filePan = document.getElementById("kycFilePan").files[0];
@@ -285,8 +299,8 @@ async function submitKyc() {
     alert("Please select an available Bed Slot.");
     return;
   }
-  if (!name || !age || !phone || !parent || !email || !address || !orgName || !aadhaar || !rent || !deposit) {
-    alert("Please fill in all mandatory fields (*).");
+  if (!name || !age || !phone || !parent || !email || !address || !orgName || !aadhaar || !rent || !deposit || !joinDate) {
+    alert("Please fill in all mandatory fields (*), including Date of Joining.");
     return;
   }
   if (!fileAadhaar || !filePan || !fileOrgId) {
@@ -321,6 +335,7 @@ async function submitKyc() {
       parent: parent,
       rent: rent,
       deposit: deposit,
+      joinDate: joinDate,
       due: rent,
       aadhaarFile: aadhaarObj,
       panFile: panObj,
@@ -340,7 +355,7 @@ async function submitKyc() {
     }
 
     var box = document.getElementById("successBox");
-    box.innerHTML = "<b>✅ Registration Successful!</b><br>Thank you, " + name + ". Your bed <b>" + room + "</b> is locked and confirmed.";
+    box.innerHTML = "<b>✅ Registration Successful!</b><br>Thank you, " + name + ". Your bed <b>" + room + "</b> is locked. Joining Date: <b>" + joinDate + "</b>.";
     box.style.display = "block";
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
