@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Meeran Bhavan - Hostel PMS & Floor Matrix</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+:root {
+  --bg: #f1f5f9; --surface: #ffffff; --panel: #f8fafc; --ink: #0f172a; --mute: #64748b;
+  --line: #e2e8f0; --line-strong: #cbd5e1; --acc: #2563eb; --green: #10b981; --warn: #ef4444;
+  --warn-soft: #fef2f2; --purple-soft: #f5f3ff; --purple: #7c3aed; --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+}
+* { box-sizing: border-box; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+body { margin: 0; background: var(--bg); color: var(--ink); padding: 16px; }
+main { max-width: 860px; margin: 0 auto; padding-bottom: 80px; }
+header { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; box-shadow: var(--shadow-sm); flex-wrap: wrap; gap: 12px; }
+h1 { margin: 0; font-size: 22px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; }
+.sub { font-size: 13px; color: var(--mute); margin-top: 2px; font-weight: 500; }
+.header-actions { display: flex; gap: 8px; }
+.sync-bar { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-size: 13px; box-shadow: var(--shadow-sm); flex-wrap: wrap; gap: 8px; }
+.sync-status { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--warn); }
+.dot.live { background: var(--green); }
+.sync-btns { display: flex; gap: 8px; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+@media (max-width: 640px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+.stat-box { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; box-shadow: var(--shadow-sm); }
+.stat-box span { font-size: 12px; color: var(--mute); font-weight: 600; display: block; margin-bottom: 4px; }
+.stat-box b { font-size: 22px; color: var(--ink); font-weight: 800; }
+.nav-tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 16px; }
+.tab-btn { background: var(--surface); border: 1px solid var(--line); color: var(--mute); padding: 11px 6px; border-radius: 10px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: center; }
+.tab-btn.active { background: var(--ink); border-color: var(--ink); color: #ffffff; }
+.section-box { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow-sm); }
+h2 { margin: 0 0 16px; font-size: 16px; font-weight: 700; color: var(--ink); display: flex; justify-content: space-between; align-items: center; }
+.floor-title { background: var(--panel); border-left: 4px solid var(--acc); padding: 9px 14px; margin: 18px 0 12px; font-weight: 700; font-size: 14px; color: var(--ink); border-radius: 0 8px 8px 0; }
+.floor-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 16px; }
+@media (max-width: 600px) { .floor-grid { grid-template-columns: 1fr; } }
+.room-card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+.room-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+.room-num { font-weight: 700; font-size: 15px; color: var(--ink); }
+.room-cap { font-size: 12px; font-weight: 700; }
+.room-cap.full { color: var(--warn); }
+.room-cap.vacant { color: var(--green); }
+.bed-slots { display: grid; gap: 8px; }
+.bed-slot { border-radius: 8px; padding: 9px 12px; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
+.bed-slot.occupied { background: #ffffff; border: 1px solid var(--line-strong); cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+.bed-slot.empty { background: transparent; border: 1.5px dashed var(--line-strong); color: var(--mute); cursor: pointer; }
+.bed-slot.empty:hover { border-color: var(--green); color: var(--green); }
+.btn { border-radius: 9px; border: none; font-weight: 600; font-size: 13px; cursor: pointer; padding: 8px 14px; display: inline-flex; align-items: center; gap: 6px; }
+.btn-primary { background: var(--ink); color: #fff; }
+.btn-green { background: var(--green); color: #fff; }
+.btn-ghost { background: var(--panel); border: 1px solid var(--line); color: var(--ink); }
+.btn-sm { padding: 6px 10px; font-size: 12px; }
+.btn-danger { background: var(--warn-soft); border: 1px solid #fecaca; color: var(--warn); }
+.badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; }
+.badge-due { background: var(--warn-soft); color: var(--warn); border: 1px solid #fecaca; }
+.badge-clear { background: #ecfdf5; color: var(--green); border: 1px solid #a7f3d0; }
+.tenant-card { background: #ffffff; border: 1px solid var(--line); border-radius: 14px; padding: 16px; margin-bottom: 12px; }
+.tc-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.tc-name { font-size: 16px; font-weight: 800; color: var(--ink); }
+.tc-room { color: var(--acc); font-weight: 700; font-size: 13px; }
+.tc-body { font-size: 13px; color: var(--mute); line-height: 1.6; margin-bottom: 12px; }
+.tc-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45); backdrop-filter: blur(4px); z-index: 1000; align-items: center; justify-content: center; padding: 16px; }
+.modal-box { background: #ffffff; border: 1px solid var(--line); border-radius: 18px; max-width: 540px; width: 100%; padding: 22px; max-height: 85vh; overflow-y: auto; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.modal-header h3 { margin: 0; font-size: 18px; font-weight: 800; color: var(--ink); }
+.close-btn { background: transparent; border: none; font-size: 24px; color: var(--mute); cursor: pointer; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+input, select { width: 100%; background: var(--panel); border: 1px solid var(--line-strong); color: var(--ink); padding: 10px 12px; border-radius: 9px; font-size: 14px; outline: none; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div>
+      <h1>Meeran Bhavan</h1>
+      <div class="sub">Hostel PMS &amp; Floor Matrix</div>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-primary btn-sm" onclick="window.backupJSON()">Backup File</button>
+      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('importInput').click()">Restore</button>
+      <input type="file" id="importInput" style="display:none" accept=".json" onchange="window.importJSON(event)">
+    </div>
+  </header>
+
+  <div class="sync-bar">
+    <div class="sync-status">
+      <div class="dot" id="syncDot"></div>
+      <span id="syncText">Drive Sync: Not Configured</span>
+    </div>
+    <div class="sync-btns">
+      <button class="btn btn-primary btn-sm" onclick="window.fetchFromCloud()">🔄 Pull from Cloud</button>
+      <button class="btn btn-ghost btn-sm" onclick="window.openGoogleSheet()">Open Cloud Sheet</button>
+      <button class="btn btn-ghost btn-sm" onclick="window.setDriveUrl()">Config Drive URL</button>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat-box"><span>Occupancy</span><b id="stBeds">0/27</b></div>
+    <div class="stat-box"><span>Vacant Beds</span><b id="stVacant" style="color:var(--green)">27</b></div>
+    <div class="stat-box"><span>Total Dues</span><b id="stDues" style="color:var(--warn)">₹0</b></div>
+    <div class="stat-box"><span>Collected</span><b id="stPaid">₹0</b></div>
+  </div>
+
+  <nav class="nav-tabs">
+    <button class="tab-btn active" id="tabMap" onclick="window.switchTab('map')">🏢 Floor Map</button>
+    <button class="tab-btn" id="tabRoster" onclick="window.switchTab('roster')">Active List</button>
+    <button class="tab-btn" id="tabAdmit" onclick="window.switchTab('admit')">+ Admit</button>
+    <button class="tab-btn" id="tabLogs" onclick="window.switchTab('logs')">Ledger Log</button>
+    <button class="tab-btn" id="tabPast" onclick="window.switchTab('past')">Archives</button>
+  </nav>
+
+  <section id="viewMap" class="section-box">
+    <h2><span>Floor &amp; Bed Matrix</span><span style="font-size:12px;color:var(--mute);font-weight:500">Tap empty bed to admit</span></h2>
+    <div id="floorMapContainer"></div>
+  </section>
+
+  <section id="viewRoster" class="section-box" style="display:none">
+    <h2>Current Occupants List</h2>
+    <div id="rosterList"></div>
+  </section>
+
+  <section id="viewAdmit" class="section-box" style="display:none">
+    <h2>Admit Student (Bed A / Bed B / Bed C)</h2>
+    <div class="row">
+      <div><label>Select Room &amp; Bed</label><select id="inRoomSelect"></select></div>
+      <div><label>Monthly Rent (₹)</label><input id="inRent" type="number" placeholder="4500"></div>
+    </div>
+    <div class="row">
+      <div><label>Student Name</label><input id="inName" placeholder="Full name"></div>
+      <div><label>WhatsApp Number</label><input id="inPhone" type="tel" placeholder="10-digit number"></div>
+    </div>
+    <button class="btn btn-green" style="width:100%;margin-top:12px;padding:12px" onclick="window.admitStudent()">Save Student</button>
+  </section>
+
+  <section id="viewLogs" class="section-box" style="display:none">
+    <h2>Ledger Log</h2>
+    <div id="paymentLogContainer"></div>
+  </section>
+
+  <section id="viewPast" class="section-box" style="display:none">
+    <h2>Archives</h2>
+    <div id="pastList"></div>
+  </section>
+</main>
+
+<!-- EDIT MODAL -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Edit Tenant Bed Allocation</h3>
+      <button class="close-btn" onclick="window.closeEditModal()">&times;</button>
+    </div>
+    <input type="hidden" id="editStudentId">
+    <div class="row">
+      <div><label>Student Name</label><input id="editName"></div>
+      <div><label>WhatsApp Phone</label><input id="editPhone"></div>
+    </div>
+    <div class="row">
+      <div><label>Monthly Rent (₹)</label><input id="editRent" type="number"></div>
+      <div><label>Pending Due (₹)</label><input id="editDue" type="number"></div>
+    </div>
+    <div>
+      <label>Assigned Bed Slot (e.g. 101 - Bed A or 101 - Bed B)</label>
+      <input id="editRoom" placeholder="101 - Bed A">
+    </div>
+    <button class="btn btn-green" style="width:100%;margin-top:14px;padding:11px" onclick="window.saveEditedProfile()">Update Allocation</button>
+  </div>
+</div>
+
+<!-- DETAILS MODAL -->
+<div class="modal-overlay" id="historyModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="modalStudentName">Tenant Profile</h3>
+      <button class="close-btn" onclick="window.closeModal()">&times;</button>
+    </div>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+var HOSTEL_STRUCTURE = [
+  { floor: "First Floor", rooms: [ { no: "101", cap: 2, type: "Double" }, { no: "102", cap: 2, type: "Double" }, { no: "103", cap: 2, type: "Double" }, { no: "104", cap: 3, type: "Triple" } ] },
+  { floor: "Second Floor", rooms: [ { no: "201", cap: 2, type: "Double" }, { no: "202", cap: 2, type: "Double" }, { no: "203", cap: 2, type: "Double" }, { no: "204", cap: 3, type: "Triple" } ] },
+  { floor: "Third Floor", rooms: [ { no: "301", cap: 2, type: "Double" }, { no: "302", cap: 2, type: "Double" }, { no: "303", cap: 2, type: "Double" }, { no: "304", cap: 3, type: "Triple" } ] }
+];
+
+var BED_LETTERS = ["A", "B", "C"];
+
+var DB = [];
+try {
+  var stored = localStorage.getItem("meeran_pms_data");
+  if (stored) DB = JSON.parse(stored);
+  if (!Array.isArray(DB)) DB = [];
+} catch(e) { DB = []; }
+
+// Standardize bed keys
+function normalizeBedKey(str) {
+  if (!str) return "";
+  var s = String(str).trim();
+  var match = s.match(/(\d{3})\s*-\s*Bed\s*([A-Za-z0-9]+)/i);
+  if (match) {
+    var rm = match[1];
+    var b = match[2].toUpperCase();
+    if (b === "1") b = "A";
+    if (b === "2") b = "B";
+    if (b === "3") b = "C";
+    return rm + " - Bed " + b;
+  }
+  var numOnly = s.replace(/[^0-9]/g, '');
+  if (numOnly.length >= 3) {
+    return numOnly.substring(0, 3) + " - Bed A";
+  }
+  return s;
+}
+
+DB.forEach(function(t) {
+  t.room = normalizeBedKey(t.room);
+});
+
+var SCRIPT_URL = localStorage.getItem("meeran_apps_script_url") || "";
+var SHEET_URL = localStorage.getItem("meeran_sheet_url") || "";
+
+window.updateSyncUI = function() {
+  var dot = document.getElementById("syncDot");
+  var txt = document.getElementById("syncText");
+  if (SCRIPT_URL && SCRIPT_URL.indexOf("https://script.google.com") === 0) {
+    dot.className = "dot live";
+    txt.textContent = "Drive Sync: Ready";
+  } else {
+    dot.className = "dot";
+    txt.textContent = "Drive Sync: Not Configured";
+  }
+};
+
+window.setDriveUrl = function() {
+  var input = prompt("Enter Google Apps Script Web App URL:", SCRIPT_URL);
+  if (input !== null) {
+    SCRIPT_URL = input.trim();
+    localStorage.setItem("meeran_apps_script_url", SCRIPT_URL);
+    window.updateSyncUI();
+    window.fetchFromCloud();
+  }
+};
+
+window.openGoogleSheet = function() {
+  if (!SHEET_URL) {
+    var url = prompt("Paste your Google Sheet link:");
+    if (url) {
+      SHEET_URL = url.trim();
+      localStorage.setItem("meeran_sheet_url", SHEET_URL);
+      window.open(SHEET_URL, "_blank");
+    }
+  } else {
+    window.open(SHEET_URL, "_blank");
+  }
+};
+
+/* SYSTEMATIC CLOUD PULL - NO OVERWRITE ACCIDENTS */
+window.fetchFromCloud = async function() {
+  if (!SCRIPT_URL) return;
+  var txt = document.getElementById("syncText");
+  txt.textContent = "Pulling live cloud data...";
+  
+  try {
+    var res = await fetch(SCRIPT_URL);
+    var json = await res.json();
+    if (json && json.status === "success" && Array.isArray(json.data)) {
+      // Index existing entries
+      var newDB = [];
+      var usedSlots = {};
+
+      json.data.forEach(function(item) {
+        if (!item.name) return;
+        var slot = normalizeBedKey(item.room);
+        
+        // If slot is already taken by an existing entry, move next person to Bed B
+        if (usedSlots[slot]) {
+          var rmNum = slot.substring(0, 3);
+          slot = rmNum + " - Bed B";
+        }
+        item.room = slot;
+        usedSlots[slot] = true;
+        newDB.push(item);
+      });
+
+      DB = newDB;
+      window.saveLocal();
+      alert("✅ Synced! Found " + DB.length + " occupant(s). Each bed mapped uniquely.");
+    }
+  } catch (err) {
+    console.error("Sync error:", err);
+  } finally {
+    window.updateSyncUI();
+    window.render();
+  }
+};
+
+window.switchTab = function(tab) {
+  document.getElementById("viewMap").style.display = (tab === 'map') ? 'block' : 'none';
+  document.getElementById("viewRoster").style.display = (tab === 'roster') ? 'block' : 'none';
+  document.getElementById("viewAdmit").style.display = (tab === 'admit') ? 'block' : 'none';
+  document.getElementById("viewLogs").style.display = (tab === 'logs') ? 'block' : 'none';
+  document.getElementById("viewPast").style.display = (tab === 'past') ? 'block' : 'none';
+
+  document.getElementById("tabMap").className = 'tab-btn' + (tab === 'map' ? ' active' : '');
+  document.getElementById("tabRoster").className = 'tab-btn' + (tab === 'roster' ? ' active' : '');
+  document.getElementById("tabAdmit").className = 'tab-btn' + (tab === 'admit' ? ' active' : '');
+  document.getElementById("tabLogs").className = 'tab-btn' + (tab === 'logs' ? ' active' : '');
+  document.getElementById("tabPast").className = 'tab-btn' + (tab === 'past' ? ' active' : '');
+
+  if (tab === 'map') window.renderFloorMap();
+  if (tab === 'admit') window.populateRoomDropdown();
+};
+
+window.saveLocal = function() {
+  localStorage.setItem("meeran_pms_data", JSON.stringify(DB));
+  window.render();
+};
+
+window.populateRoomDropdown = function(selectedSlot) {
+  var select = document.getElementById("inRoomSelect");
+  if (!select) return;
+  select.innerHTML = "";
+  
+  HOSTEL_STRUCTURE.forEach(function(floor) {
+    var optGroup = document.createElement("optgroup");
+    optGroup.label = floor.floor;
+
+    floor.rooms.forEach(function(room) {
+      for (var b = 0; b < room.cap; b++) {
+        var slotName = room.no + " - Bed " + BED_LETTERS[b];
+        var isOccupied = DB.some(function(x) { return x.status === "Active" && x.room === slotName; });
+        
+        var opt = document.createElement("option");
+        opt.value = slotName;
+        opt.textContent = slotName + (isOccupied ? " [Occupied]" : " [Available]");
+        if (isOccupied) opt.disabled = true;
+        if (selectedSlot && selectedSlot === slotName) opt.selected = true;
+        optGroup.appendChild(opt);
+      }
+    });
+    select.appendChild(optGroup);
+  });
+};
+
+window.admitToSlot = function(slot) {
+  window.switchTab('admit');
+  window.populateRoomDropdown(slot);
+};
+
+window.renderFloorMap = function() {
+  var container = document.getElementById("floorMapContainer");
+  if (!container) return;
+  container.innerHTML = "";
+
+  HOSTEL_STRUCTURE.forEach(function(fl) {
+    var flHeader = document.createElement("div");
+    flHeader.className = "floor-title";
+    flHeader.textContent = fl.floor;
+    container.appendChild(flHeader);
+
+    var grid = document.createElement("div");
+    grid.className = "floor-grid";
+
+    fl.rooms.forEach(function(rm) {
+      var roomCard = document.createElement("div");
+      roomCard.className = "room-card";
+
+      var occupiedInRoom = [];
+      for (var b = 0; b < rm.cap; b++) {
+        var letter = BED_LETTERS[b];
+        var slotId = rm.no + " - Bed " + letter;
+        
+        var occ = DB.find(function(x) { 
+          if (!x || x.status === "Vacated") return false;
+          return normalizeBedKey(x.room) === slotId;
+        });
+        occupiedInRoom.push({ bedLetter: letter, slotId: slotId, student: occ });
+      }
+
+      var occCount = occupiedInRoom.filter(function(x) { return !!x.student; }).length;
+      var isFull = occCount === rm.cap;
+
+      var headerHtml = '<div class="room-header">' +
+        '<span class="room-num">Room ' + rm.no + ' <small style="font-weight:500;color:var(--mute)">(' + rm.type + ')</small></span>' +
+        '<span class="room-cap ' + (isFull ? 'full' : 'vacant') + '">' +
+          (isFull ? 'Full (' + occCount + '/' + rm.cap + ')' : (rm.cap - occCount) + ' Vacant (' + occCount + '/' + rm.cap + ')') +
+        '</span>' +
+      '</div>';
+
+      var bedsHtml = '<div class="bed-slots">';
+      occupiedInRoom.forEach(function(item) {
+        if (item.student) {
+          bedsHtml += '<div class="bed-slot occupied" onclick="window.viewHistory(' + item.student.id + ')">' +
+            '<div>' +
+              '<b>Bed ' + item.bedLetter + ':</b> ' + item.student.name +
+            '</div>' +
+            '<span class="badge ' + (item.student.due > 0 ? 'badge-due' : 'badge-clear') + '">' +
+              (item.student.due > 0 ? 'Due ₹' + item.student.due : 'Paid') +
+            '</span>' +
+          '</div>';
+        } else {
+          bedsHtml += '<div class="bed-slot empty" onclick="window.admitToSlot(\'' + item.slotId + '\')">' +
+            '<span>Bed ' + item.bedLetter + ': Empty</span>' +
+            '<span style="font-size:12px;font-weight:700;color:var(--green)">+ Admit</span>' +
+          '</div>';
+        }
+      });
+      bedsHtml += '</div>';
+
+      roomCard.innerHTML = headerHtml + bedsHtml;
+      grid.appendChild(roomCard);
+    });
+
+    container.appendChild(grid);
+  });
+};
+
+window.openEditModal = function(id) {
+  var t = DB.find(function(x) { return x.id === id; });
+  if (!t) return;
+  document.getElementById("editStudentId").value = id;
+  document.getElementById("editName").value = t.name || "";
+  document.getElementById("editPhone").value = t.phone || "";
+  document.getElementById("editRent").value = t.rent || 0;
+  document.getElementById("editDue").value = t.due || 0;
+  document.getElementById("editRoom").value = t.room || "";
+  document.getElementById("editModal").style.display = "flex";
+};
+
+window.closeEditModal = function() {
+  document.getElementById("editModal").style.display = "none";
+};
+
+window.saveEditedProfile = function() {
+  var id = parseInt(document.getElementById("editStudentId").value);
+  var t = DB.find(function(x) { return x.id === id; });
+  if (!t) return;
+
+  t.name = document.getElementById("editName").value.trim();
+  t.phone = document.getElementById("editPhone").value.trim();
+  t.rent = parseFloat(document.getElementById("editRent").value) || 0;
+  t.due = parseFloat(document.getElementById("editDue").value) || 0;
+  t.room = normalizeBedKey(document.getElementById("editRoom").value.trim());
+
+  window.saveLocal();
+  alert("Bed allocation updated!");
+  window.closeEditModal();
+};
+
+window.viewHistory = function(id) {
+  var t = DB.find(function(x) { return x.id === id; });
+  if (!t) return;
+
+  document.getElementById("modalStudentName").textContent = t.name + " (" + t.room + ")";
+  
+  var kycButtons = "";
+  if (t.aadhaarLink) kycButtons += '<a href="' + t.aadhaarLink + '" target="_blank" class="btn btn-ghost btn-sm">📄 Aadhaar</a> ';
+  if (t.panLink) kycButtons += '<a href="' + t.panLink + '" target="_blank" class="btn btn-ghost btn-sm">💳 PAN</a> ';
+  if (t.orgIdLink) kycButtons += '<a href="' + t.orgIdLink + '" target="_blank" class="btn btn-ghost btn-sm">🎓 College/Work ID</a>';
+
+  var html = '<div style="background:var(--panel);padding:14px;border-radius:12px;font-size:13px;line-height:1.6">' +
+    '<b>Assigned Bed:</b> ' + t.room + '<br>' +
+    '<b>Phone:</b> ' + t.phone + ' | <b>Parent:</b> ' + (t.parent || 'N/A') + '<br>' +
+    '<b>Age:</b> ' + (t.age || 'N/A') + ' | <b>College/Company:</b> ' + (t.orgName || 'N/A') + '<br>' +
+    '<b>Address:</b> ' + (t.address || 'N/A') + '<br>' +
+    '<b>Aadhaar:</b> ' + (t.aadhaar || 'N/A') + ' | <b>Deposit:</b> ₹' + t.deposit + '<br><br>' +
+    '<b>Documents:</b> ' + (kycButtons || 'None') +
+    '</div>' +
+    '<div style="margin-top:14px;display:flex;justify-content:space-between">' +
+      '<button class="btn btn-ghost btn-sm" onclick="window.openEditModal(' + t.id + ')">✏️ Edit Allocation</button>' +
+      '<button class="btn btn-danger btn-sm" onclick="window.deleteProfile(' + t.id + ')">🗑️ Delete</button>' +
+    '</div>';
+
+  document.getElementById("modalContent").innerHTML = html;
+  document.getElementById("historyModal").style.display = "flex";
+};
+
+window.closeModal = function() {
+  document.getElementById("historyModal").style.display = "none";
+};
+
+window.deleteProfile = function(id) {
+  if (confirm("Delete this occupant?")) {
+    DB = DB.filter(function(x) { return x.id !== id; });
+    window.saveLocal();
+    window.closeModal();
+  }
+};
+
+window.admitStudent = function() {
+  var room = document.getElementById("inRoomSelect").value;
+  var name = document.getElementById("inName").value.trim();
+  var phone = document.getElementById("inPhone").value.trim();
+  var rent = parseFloat(document.getElementById("inRent").value) || 0;
+
+  if (!room || !name) {
+    alert("Select Room & Bed and enter Name.");
+    return;
+  }
+
+  DB.push({
+    id: Date.now(),
+    room: normalizeBedKey(room),
+    name: name,
+    phone: phone,
+    rent: rent,
+    due: rent,
+    status: "Active"
+  });
+
+  window.saveLocal();
+  alert("Admitted into " + room);
+  window.switchTab('map');
+};
+
+window.render = function() {
+  var activeList = document.getElementById("rosterList");
+  if (!activeList) return;
+  activeList.innerHTML = "";
+
+  var activeCount = 0;
+  var totalDues = 0;
+  var totalPaid = 0;
+
+  DB.forEach(function(t) {
+    if (t.status !== "Vacated") {
+      activeCount++;
+      totalDues += (t.due || 0);
+      if (t.due === 0) totalPaid += (t.rent || 0);
+
+      var el = document.createElement("div");
+      el.className = "tenant-card";
+      el.innerHTML = 
+        '<div class="tc-head"><span class="tc-name">' + t.name + '</span><span class="tc-room">' + t.room + '</span></div>' +
+        '<div class="tc-body">📱 ' + t.phone + ' | Rent: ₹' + t.rent + ' | <span class="badge ' + (t.due > 0 ? 'badge-due' : 'badge-clear') + '">' + (t.due > 0 ? 'Due ₹' + t.due : 'Paid') + '</span></div>' +
+        '<div class="tc-actions">' +
+          '<button class="btn btn-ghost btn-sm" onclick="window.viewHistory(' + t.id + ')">📜 Details</button>' +
+          '<button class="btn btn-ghost btn-sm" onclick="window.openEditModal(' + t.id + ')">✏️ Change Bed</button>' +
+        '</div>';
+      activeList.appendChild(el);
+    }
+  });
+
+  var TOTAL_BEDS = 27;
+  document.getElementById("stBeds").textContent = activeCount + "/" + TOTAL_BEDS;
+  document.getElementById("stVacant").textContent = (TOTAL_BEDS - activeCount);
+  document.getElementById("stDues").textContent = "₹" + totalDues.toLocaleString("en-IN");
+  document.getElementById("stPaid").textContent = "₹" + totalPaid.toLocaleString("en-IN");
+
+  window.renderFloorMap();
+};
+
+window.backupJSON = function() {
+  var blob = new Blob([JSON.stringify(DB, null, 2)], { type: "application/json" });
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "Meeran_Bhavan_Backup.json";
+  a.click();
+};
+
+window.importJSON = function(event) {
+  var file = event.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      DB = JSON.parse(e.target.result);
+      window.saveLocal();
+      alert("Restored!");
+    } catch(err) { alert("Invalid file"); }
+  };
+  reader.readAsText(file);
+};
+
+window.updateSyncUI();
+window.render();
+if (SCRIPT_URL) window.fetchFromCloud();
+</script>
+</body>
+</html>
