@@ -3,37 +3,65 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Meeran Bhavan - Hostel PMS & Floor Matrix</title>
+<title>Meeran Bhavan - Hostel PMS & Financial Analytics</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
 <style>
 :root {
   --bg: #f1f5f9; --surface: #ffffff; --panel: #f8fafc; --ink: #0f172a; --mute: #64748b;
-  --line: #e2e8f0; --line-strong: #cbd5e1; --acc: #2563eb; --green: #10b981; --warn: #ef4444;
-  --warn-soft: #fef2f2; --purple-soft: #f5f3ff; --purple: #7c3aed; --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+  --line: #e2e8f0; --line-strong: #cbd5e1; --acc: #2563eb; --acc-soft: #eff6ff;
+  --green: #10b981; --green-soft: #ecfdf5; --warn: #ef4444; --warn-soft: #fef2f2;
+  --purple: #7c3aed; --purple-soft: #f5f3ff; --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
 }
 * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
 body { margin: 0; background: var(--bg); color: var(--ink); padding: 16px; }
-main { max-width: 860px; margin: 0 auto; padding-bottom: 80px; }
-header { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; box-shadow: var(--shadow-sm); flex-wrap: wrap; gap: 12px; }
+main { max-width: 920px; margin: 0 auto; padding-bottom: 80px; }
+
+header {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+  padding: 18px 24px; display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 14px; box-shadow: var(--shadow-sm); flex-wrap: wrap; gap: 12px;
+}
 h1 { margin: 0; font-size: 22px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; }
 .sub { font-size: 13px; color: var(--mute); margin-top: 2px; font-weight: 500; }
 .header-actions { display: flex; gap: 8px; }
-.sync-bar { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-size: 13px; box-shadow: var(--shadow-sm); flex-wrap: wrap; gap: 8px; }
+
+.sync-bar {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+  padding: 10px 16px; display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 14px; font-size: 13px; box-shadow: var(--shadow-sm); flex-wrap: wrap; gap: 8px;
+}
 .sync-status { display: flex; align-items: center; gap: 8px; font-weight: 600; }
 .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--warn); }
 .dot.live { background: var(--green); }
-.sync-btns { display: flex; gap: 8px; }
+.sync-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
-@media (max-width: 640px) { .stats { grid-template-columns: repeat(2, 1fr); } }
-.stat-box { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; box-shadow: var(--shadow-sm); }
+@media (max-width: 680px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+.stat-box {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+  padding: 14px 16px; box-shadow: var(--shadow-sm);
+}
 .stat-box span { font-size: 12px; color: var(--mute); font-weight: 600; display: block; margin-bottom: 4px; }
 .stat-box b { font-size: 22px; color: var(--ink); font-weight: 800; }
-.nav-tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 16px; }
-.tab-btn { background: var(--surface); border: 1px solid var(--line); color: var(--mute); padding: 11px 6px; border-radius: 10px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: center; }
+
+.nav-tabs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-bottom: 16px; }
+@media (max-width: 720px) { .nav-tabs { grid-template-columns: repeat(3, 1fr); } }
+.tab-btn {
+  background: var(--surface); border: 1px solid var(--line); color: var(--mute);
+  padding: 11px 6px; border-radius: 10px; font-weight: 700; font-size: 13px; cursor: pointer; text-align: center;
+}
 .tab-btn.active { background: var(--ink); border-color: var(--ink); color: #ffffff; }
-.section-box { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow-sm); }
-h2 { margin: 0 0 16px; font-size: 16px; font-weight: 700; color: var(--ink); display: flex; justify-content: space-between; align-items: center; }
-.floor-title { background: var(--panel); border-left: 4px solid var(--acc); padding: 9px 14px; margin: 18px 0 12px; font-weight: 700; font-size: 14px; color: var(--ink); border-radius: 0 8px 8px 0; }
+
+.section-box {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+  padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow-sm);
+}
+h2 { margin: 0 0 16px; font-size: 16px; font-weight: 700; color: var(--ink); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+
+.floor-title {
+  background: var(--panel); border-left: 4px solid var(--acc); padding: 9px 14px;
+  margin: 18px 0 12px; font-weight: 700; font-size: 14px; color: var(--ink); border-radius: 0 8px 8px 0;
+}
 .floor-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 16px; }
 @media (max-width: 600px) { .floor-grid { grid-template-columns: 1fr; } }
 .room-card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
@@ -42,32 +70,55 @@ h2 { margin: 0 0 16px; font-size: 16px; font-weight: 700; color: var(--ink); dis
 .room-cap { font-size: 12px; font-weight: 700; }
 .room-cap.full { color: var(--warn); }
 .room-cap.vacant { color: var(--green); }
+
 .bed-slots { display: grid; gap: 8px; }
 .bed-slot { border-radius: 8px; padding: 9px 12px; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
 .bed-slot.occupied { background: #ffffff; border: 1px solid var(--line-strong); cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+.bed-slot.occupied:hover { border-color: var(--acc); }
 .bed-slot.empty { background: transparent; border: 1.5px dashed var(--line-strong); color: var(--mute); cursor: pointer; }
 .bed-slot.empty:hover { border-color: var(--green); color: var(--green); }
-.btn { border-radius: 9px; border: none; font-weight: 600; font-size: 13px; cursor: pointer; padding: 8px 14px; display: inline-flex; align-items: center; gap: 6px; }
+
+.btn {
+  border-radius: 9px; border: none; font-weight: 600; font-size: 13px; cursor: pointer;
+  padding: 8px 14px; display: inline-flex; align-items: center; gap: 6px;
+}
 .btn-primary { background: var(--ink); color: #fff; }
 .btn-green { background: var(--green); color: #fff; }
 .btn-ghost { background: var(--panel); border: 1px solid var(--line); color: var(--ink); }
 .btn-sm { padding: 6px 10px; font-size: 12px; }
 .btn-danger { background: var(--warn-soft); border: 1px solid #fecaca; color: var(--warn); }
+
 .badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; }
 .badge-due { background: var(--warn-soft); color: var(--warn); border: 1px solid #fecaca; }
-.badge-clear { background: #ecfdf5; color: var(--green); border: 1px solid #a7f3d0; }
+.badge-clear { background: var(--green-soft); color: var(--green); border: 1px solid #a7f3d0; }
+.badge-dep { background: var(--purple-soft); color: var(--purple); border: 1px solid #ddd6fe; }
+
 .tenant-card { background: #ffffff; border: 1px solid var(--line); border-radius: 14px; padding: 16px; margin-bottom: 12px; }
 .tc-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
 .tc-name { font-size: 16px; font-weight: 800; color: var(--ink); }
 .tc-room { color: var(--acc); font-weight: 700; font-size: 13px; }
 .tc-body { font-size: 13px; color: var(--mute); line-height: 1.6; margin-bottom: 12px; }
 .tc-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+.log-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
+.log-table th, .log-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--line); }
+.log-table th { color: var(--mute); font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; background: var(--panel); }
+
+.fin-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 18px; }
+@media (max-width: 680px) { .fin-grid { grid-template-columns: repeat(2, 1fr); } }
+.fin-card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+.fin-card span { font-size: 11px; font-weight: 700; color: var(--mute); text-transform: uppercase; display: block; margin-bottom: 6px; }
+.fin-card b { font-size: 20px; font-weight: 800; color: var(--ink); }
+.fin-card small { display: block; font-size: 11px; color: var(--mute); margin-top: 4px; }
+
 .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45); backdrop-filter: blur(4px); z-index: 1000; align-items: center; justify-content: center; padding: 16px; }
 .modal-box { background: #ffffff; border: 1px solid var(--line); border-radius: 18px; max-width: 540px; width: 100%; padding: 22px; max-height: 85vh; overflow-y: auto; }
 .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
 .modal-header h3 { margin: 0; font-size: 18px; font-weight: 800; color: var(--ink); }
 .close-btn { background: transparent; border: none; font-size: 24px; color: var(--mute); cursor: pointer; }
 .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+@media (max-width: 520px) { .row { grid-template-columns: 1fr; } }
+label { display: block; font-size: 12px; font-weight: 600; color: var(--mute); margin-bottom: 5px; }
 input, select { width: 100%; background: var(--panel); border: 1px solid var(--line-strong); color: var(--ink); padding: 10px 12px; border-radius: 9px; font-size: 14px; outline: none; }
 </style>
 </head>
@@ -76,7 +127,7 @@ input, select { width: 100%; background: var(--panel); border: 1px solid var(--l
   <header>
     <div>
       <h1>Meeran Bhavan</h1>
-      <div class="sub">Hostel PMS &amp; Floor Matrix</div>
+      <div class="sub">Hostel PMS, Floor Matrix &amp; Financial Engine</div>
     </div>
     <div class="header-actions">
       <button class="btn btn-primary btn-sm" onclick="window.backupJSON()">Backup File</button>
@@ -100,57 +151,163 @@ input, select { width: 100%; background: var(--panel); border: 1px solid var(--l
   <div class="stats">
     <div class="stat-box"><span>Occupancy</span><b id="stBeds">0/27</b></div>
     <div class="stat-box"><span>Vacant Beds</span><b id="stVacant" style="color:var(--green)">27</b></div>
-    <div class="stat-box"><span>Total Dues</span><b id="stDues" style="color:var(--warn)">₹0</b></div>
-    <div class="stat-box"><span>Collected</span><b id="stPaid">₹0</b></div>
+    <div class="stat-box"><span>Current Pending Dues</span><b id="stDues" style="color:var(--warn)">₹0</b></div>
+    <div class="stat-box"><span>This Month Rent Collected</span><b id="stPaid" style="color:var(--acc)">₹0</b></div>
   </div>
 
   <nav class="nav-tabs">
     <button class="tab-btn active" id="tabMap" onclick="window.switchTab('map')">🏢 Floor Map</button>
     <button class="tab-btn" id="tabRoster" onclick="window.switchTab('roster')">Active List</button>
-    <button class="tab-btn" id="tabAdmit" onclick="window.switchTab('admit')">+ Admit</button>
+    <button class="tab-btn" id="tabFin" onclick="window.switchTab('fin')">📊 Financials</button>
     <button class="tab-btn" id="tabLogs" onclick="window.switchTab('logs')">Ledger Log</button>
+    <button class="tab-btn" id="tabAdmit" onclick="window.switchTab('admit')">+ Admit</button>
     <button class="tab-btn" id="tabPast" onclick="window.switchTab('past')">Archives</button>
   </nav>
 
+  <!-- VIEW 1: FLOOR MAP -->
   <section id="viewMap" class="section-box">
-    <h2><span>Floor &amp; Bed Matrix</span><span style="font-size:12px;color:var(--mute);font-weight:500">Tap empty bed to admit</span></h2>
+    <h2><span>Floor &amp; Bed Matrix</span><span style="font-size:12px;color:var(--mute);font-weight:500">Tap any bed to manage occupant or admit</span></h2>
     <div id="floorMapContainer"></div>
   </section>
 
+  <!-- VIEW 2: ACTIVE ROSTER -->
   <section id="viewRoster" class="section-box" style="display:none">
     <h2>Current Occupants List</h2>
     <div id="rosterList"></div>
   </section>
 
+  <!-- VIEW 3: FINANCIAL ANALYTICS (MONTHLY / QUARTERLY / ANNUAL) -->
+  <section id="viewFin" class="section-box" style="display:none">
+    <h2>
+      <span>📊 Live Rent Revenue &amp; Financial Summary</span>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-green btn-sm" onclick="window.openRecordPaymentModal()">+ Record Rent Payment</button>
+        <button class="btn btn-ghost btn-sm" onclick="window.exportFinancialCSV()">📥 Export CSV</button>
+      </div>
+    </h2>
+
+    <!-- KPI SUMMARY CARDS -->
+    <div class="fin-grid">
+      <div class="fin-card" style="border-left:4px solid var(--green)">
+        <span>This Month Rent (MTD)</span>
+        <b id="finMTD" style="color:var(--green)">₹0</b>
+        <small id="finMTDLabel">Current Month</small>
+      </div>
+      <div class="fin-card" style="border-left:4px solid var(--acc)">
+        <span>Current Quarter Rent</span>
+        <b id="finQTD" style="color:var(--acc)">₹0</b>
+        <small id="finQTDLabel">Current Quarter</small>
+      </div>
+      <div class="fin-card" style="border-left:4px solid var(--ink)">
+        <span>Annual Rent (FY)</span>
+        <b id="finYTD">₹0</b>
+        <small id="finYTDLabel">Financial Year</small>
+      </div>
+      <div class="fin-card" style="border-left:4px solid var(--purple)">
+        <span>Security Deposits Held</span>
+        <b id="finDeposits" style="color:var(--purple)">₹0</b>
+        <small>Refundable Liability</small>
+      </div>
+    </div>
+
+    <!-- QUARTERLY BREAKDOWN -->
+    <h3 style="font-size:14px;margin:20px 0 10px;color:var(--ink)">Quarterly Rent Performance (Indian Fiscal Apr–Mar)</h3>
+    <div style="overflow-x:auto">
+      <table class="log-table" id="quarterTable">
+        <thead>
+          <tr>
+            <th>Fiscal Quarter</th>
+            <th>Period</th>
+            <th>Rent Collected</th>
+            <th>Deposits Received</th>
+            <th>Total Cash Inflow</th>
+          </tr>
+        </thead>
+        <tbody id="quarterTableBody"></tbody>
+      </table>
+    </div>
+
+    <!-- MONTHLY BREAKDOWN -->
+    <h3 style="font-size:14px;margin:24px 0 10px;color:var(--ink)">Month-by-Month Collection Summary</h3>
+    <div style="overflow-x:auto">
+      <table class="log-table" id="monthTable">
+        <thead>
+          <tr>
+            <th>Month</th>
+            <th>Active Expected Rent</th>
+            <th>Rent Realized (Collected)</th>
+            <th>Deposits Collected</th>
+            <th>Collection Efficiency</th>
+          </tr>
+        </thead>
+        <tbody id="monthTableBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- VIEW 4: LEDGER LOG -->
+  <section id="viewLogs" class="section-box" style="display:none">
+    <h2>
+      <span>Immutable Cash &amp; Bank Transaction Ledger</span>
+      <button class="btn btn-green btn-sm" onclick="window.openRecordPaymentModal()">+ Add Entry</button>
+    </h2>
+    <div style="overflow-x:auto">
+      <table class="log-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Bed Slot</th>
+            <th>Tenant</th>
+            <th>Category</th>
+            <th>Amount</th>
+            <th>Proof / Notes</th>
+          </tr>
+        </thead>
+        <tbody id="paymentLogBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- VIEW 5: ADMIT STUDENT -->
   <section id="viewAdmit" class="section-box" style="display:none">
-    <h2>Admit Student (Bed A / Bed B / Bed C)</h2>
+    <h2>Admit Student Directly</h2>
     <div class="row">
       <div><label>Select Room &amp; Bed</label><select id="inRoomSelect"></select></div>
-      <div><label>Monthly Rent (₹)</label><input id="inRent" type="number" placeholder="4500"></div>
+      <div><label>Joining Date</label><input id="inDate" type="date"></div>
     </div>
     <div class="row">
       <div><label>Student Name</label><input id="inName" placeholder="Full name"></div>
       <div><label>WhatsApp Number</label><input id="inPhone" type="tel" placeholder="10-digit number"></div>
     </div>
-    <button class="btn btn-green" style="width:100%;margin-top:12px;padding:12px" onclick="window.admitStudent()">Save Student</button>
+    <div class="row">
+      <div><label>Monthly Agreed Rent (₹)</label><input id="inRent" type="number" placeholder="5000"></div>
+      <div><label>Deposit Paid (₹)</label><input id="inDeposit" type="number" placeholder="5000"></div>
+    </div>
+    <div class="row">
+      <div><label>Student Email</label><input id="inEmail" type="email" placeholder="student@gmail.com"></div>
+      <div>
+        <label>First Month Rent Status</label>
+        <select id="inFirstRentPaid">
+          <option value="no">Pending (Set as Due)</option>
+          <option value="yes">Already Paid Today (Log in This Month Rent)</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn btn-green" style="width:100%;margin-top:12px;padding:12px" onclick="window.admitStudent()">Save &amp; Sync to Cloud</button>
   </section>
 
-  <section id="viewLogs" class="section-box" style="display:none">
-    <h2>Ledger Log</h2>
-    <div id="paymentLogContainer"></div>
-  </section>
-
+  <!-- VIEW 6: ARCHIVES -->
   <section id="viewPast" class="section-box" style="display:none">
-    <h2>Archives</h2>
+    <h2>Vacated / Past Tenants Archive</h2>
     <div id="pastList"></div>
   </section>
 </main>
 
-<!-- EDIT MODAL -->
+<!-- MODAL: EDIT ALLOCATION -->
 <div class="modal-overlay" id="editModal">
   <div class="modal-box">
     <div class="modal-header">
-      <h3>Edit Tenant Bed Allocation</h3>
+      <h3>Edit Tenant &amp; Bed Allocation</h3>
       <button class="close-btn" onclick="window.closeEditModal()">&times;</button>
     </div>
     <input type="hidden" id="editStudentId">
@@ -160,17 +317,59 @@ input, select { width: 100%; background: var(--panel); border: 1px solid var(--l
     </div>
     <div class="row">
       <div><label>Monthly Rent (₹)</label><input id="editRent" type="number"></div>
-      <div><label>Pending Due (₹)</label><input id="editDue" type="number"></div>
+      <div><label>Current Pending Due (₹)</label><input id="editDue" type="number"></div>
     </div>
-    <div>
-      <label>Assigned Bed Slot (e.g. 101 - Bed A or 101 - Bed B)</label>
-      <input id="editRoom" placeholder="101 - Bed A">
+    <div class="row">
+      <div><label>Deposit Paid (₹)</label><input id="editDeposit" type="number"></div>
+      <div><label>Joining Date</label><input id="editJoinDate" type="date"></div>
     </div>
-    <button class="btn btn-green" style="width:100%;margin-top:14px;padding:11px" onclick="window.saveEditedProfile()">Update Allocation</button>
+    <div class="row">
+      <div><label>Assigned Bed (e.g. 101 - Bed A)</label><input id="editRoom"></div>
+      <div><label>Student Email</label><input id="editEmail" type="email"></div>
+    </div>
+    <button class="btn btn-green" style="width:100%;margin-top:14px;padding:11px" onclick="window.saveEditedProfile()">Save &amp; Update Cloud</button>
   </div>
 </div>
 
-<!-- DETAILS MODAL -->
+<!-- MODAL: RECORD PAYMENT MANUALLY -->
+<div class="modal-overlay" id="payModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>💰 Record Rent / Cash Collection</h3>
+      <button class="close-btn" onclick="document.getElementById('payModal').style.display='none'">&times;</button>
+    </div>
+    <div class="row">
+      <div>
+        <label>Select Active Tenant</label>
+        <select id="payModalTenant" onchange="window.syncPayModalTenant()"></select>
+      </div>
+      <div>
+        <label>Payment Date</label>
+        <input type="date" id="payModalDate">
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <label>Payment Category</label>
+        <select id="payModalCat">
+          <option value="RENT">Monthly Rent (Counts in Revenue)</option>
+          <option value="DEPOSIT">Security Deposit (Liability)</option>
+        </select>
+      </div>
+      <div>
+        <label>Amount Received (₹)</label>
+        <input type="number" id="payModalAmt" placeholder="5000">
+      </div>
+    </div>
+    <div>
+      <label>Payment Mode / Notes</label>
+      <input type="text" id="payModalNotes" placeholder="e.g. Cash / GPay / PhonePe">
+    </div>
+    <button class="btn btn-green" style="width:100%;margin-top:14px;padding:12px" onclick="window.submitManualPayment()">Record Payment &amp; Clear Due</button>
+  </div>
+</div>
+
+<!-- MODAL: TENANT DETAILS -->
 <div class="modal-overlay" id="historyModal">
   <div class="modal-box">
     <div class="modal-header">
@@ -187,17 +386,19 @@ var HOSTEL_STRUCTURE = [
   { floor: "Second Floor", rooms: [ { no: "201", cap: 2, type: "Double" }, { no: "202", cap: 2, type: "Double" }, { no: "203", cap: 2, type: "Double" }, { no: "204", cap: 3, type: "Triple" } ] },
   { floor: "Third Floor", rooms: [ { no: "301", cap: 2, type: "Double" }, { no: "302", cap: 2, type: "Double" }, { no: "303", cap: 2, type: "Double" }, { no: "304", cap: 3, type: "Triple" } ] }
 ];
-
 var BED_LETTERS = ["A", "B", "C"];
 
 var DB = [];
+var LEDGER = [];
 try {
-  var stored = localStorage.getItem("meeran_pms_data");
-  if (stored) DB = JSON.parse(stored);
+  var s1 = localStorage.getItem("meeran_pms_data");
+  if (s1) DB = JSON.parse(s1);
   if (!Array.isArray(DB)) DB = [];
-} catch(e) { DB = []; }
+  var s2 = localStorage.getItem("meeran_pms_ledger");
+  if (s2) LEDGER = JSON.parse(s2);
+  if (!Array.isArray(LEDGER)) LEDGER = [];
+} catch(e) { DB = []; LEDGER = []; }
 
-// Standardize bed keys
 function normalizeBedKey(str) {
   if (!str) return "";
   var s = String(str).trim();
@@ -211,15 +412,27 @@ function normalizeBedKey(str) {
     return rm + " - Bed " + b;
   }
   var numOnly = s.replace(/[^0-9]/g, '');
-  if (numOnly.length >= 3) {
-    return numOnly.substring(0, 3) + " - Bed A";
-  }
+  if (numOnly.length >= 3) return numOnly.substring(0, 3) + " - Bed A";
   return s;
 }
 
-DB.forEach(function(t) {
-  t.room = normalizeBedKey(t.room);
-});
+function getFiscalKeysJS(dateStr) {
+  var d = dateStr ? new Date(dateStr) : new Date();
+  if (isNaN(d.getTime())) d = new Date();
+  var yr = d.getFullYear();
+  var mo = d.getMonth() + 1;
+  var monthKey = yr + "-" + ("0" + mo).slice(-2);
+  var fyStart = (mo >= 4) ? yr : (yr - 1);
+  var fyEnd = (fyStart + 1) % 100;
+  var fyKey = "FY " + fyStart + "-" + ("0" + fyEnd).slice(-2);
+  var q = (mo >= 4 && mo <= 6) ? 1 : (mo >= 7 && mo <= 9) ? 2 : (mo >= 10 && mo <= 12) ? 3 : 4;
+  return {
+    dateStr: d.toISOString().slice(0, 10),
+    monthKey: monthKey,
+    quarterKey: fyKey + " Q" + q,
+    fyKey: fyKey
+  };
+}
 
 var SCRIPT_URL = localStorage.getItem("meeran_apps_script_url") || "";
 var SHEET_URL = localStorage.getItem("meeran_sheet_url") || "";
@@ -259,37 +472,17 @@ window.openGoogleSheet = function() {
   }
 };
 
-/* SYSTEMATIC CLOUD PULL - NO OVERWRITE ACCIDENTS */
 window.fetchFromCloud = async function() {
   if (!SCRIPT_URL) return;
   var txt = document.getElementById("syncText");
-  txt.textContent = "Pulling live cloud data...";
-  
+  txt.textContent = "Syncing with Cloud...";
   try {
     var res = await fetch(SCRIPT_URL);
     var json = await res.json();
-    if (json && json.status === "success" && Array.isArray(json.data)) {
-      // Index existing entries
-      var newDB = [];
-      var usedSlots = {};
-
-      json.data.forEach(function(item) {
-        if (!item.name) return;
-        var slot = normalizeBedKey(item.room);
-        
-        // If slot is already taken by an existing entry, move next person to Bed B
-        if (usedSlots[slot]) {
-          var rmNum = slot.substring(0, 3);
-          slot = rmNum + " - Bed B";
-        }
-        item.room = slot;
-        usedSlots[slot] = true;
-        newDB.push(item);
-      });
-
-      DB = newDB;
+    if (json && json.status === "success") {
+      if (Array.isArray(json.data)) DB = json.data;
+      if (Array.isArray(json.ledger)) LEDGER = json.ledger;
       window.saveLocal();
-      alert("✅ Synced! Found " + DB.length + " occupant(s). Each bed mapped uniquely.");
     }
   } catch (err) {
     console.error("Sync error:", err);
@@ -299,25 +492,35 @@ window.fetchFromCloud = async function() {
   }
 };
 
-window.switchTab = function(tab) {
-  document.getElementById("viewMap").style.display = (tab === 'map') ? 'block' : 'none';
-  document.getElementById("viewRoster").style.display = (tab === 'roster') ? 'block' : 'none';
-  document.getElementById("viewAdmit").style.display = (tab === 'admit') ? 'block' : 'none';
-  document.getElementById("viewLogs").style.display = (tab === 'logs') ? 'block' : 'none';
-  document.getElementById("viewPast").style.display = (tab === 'past') ? 'block' : 'none';
+window.pushCloudAction = async function(payload) {
+  if (!SCRIPT_URL) return;
+  try {
+    await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
+  } catch (e) { console.warn("Cloud push warning:", e); }
+};
 
-  document.getElementById("tabMap").className = 'tab-btn' + (tab === 'map' ? ' active' : '');
-  document.getElementById("tabRoster").className = 'tab-btn' + (tab === 'roster' ? ' active' : '');
-  document.getElementById("tabAdmit").className = 'tab-btn' + (tab === 'admit' ? ' active' : '');
-  document.getElementById("tabLogs").className = 'tab-btn' + (tab === 'logs' ? ' active' : '');
-  document.getElementById("tabPast").className = 'tab-btn' + (tab === 'past' ? ' active' : '');
+window.switchTab = function(tab) {
+  var tabs = ['map', 'roster', 'fin', 'logs', 'admit', 'past'];
+  var ids = { map: 'viewMap', roster: 'viewRoster', fin: 'viewFin', logs: 'viewLogs', admit: 'viewAdmit', past: 'viewPast' };
+  var btns = { map: 'tabMap', roster: 'tabRoster', fin: 'tabFin', logs: 'tabLogs', admit: 'tabAdmit', past: 'tabPast' };
+
+  tabs.forEach(function(t) {
+    document.getElementById(ids[t]).style.display = (t === tab) ? 'block' : 'none';
+    document.getElementById(btns[t]).className = 'tab-btn' + (t === tab ? ' active' : '');
+  });
 
   if (tab === 'map') window.renderFloorMap();
-  if (tab === 'admit') window.populateRoomDropdown();
+  if (tab === 'fin') window.renderFinancials();
+  if (tab === 'logs') window.renderPaymentLogs();
+  if (tab === 'admit') {
+    document.getElementById("inDate").value = new Date().toISOString().slice(0, 10);
+    window.populateRoomDropdown();
+  }
 };
 
 window.saveLocal = function() {
   localStorage.setItem("meeran_pms_data", JSON.stringify(DB));
+  localStorage.setItem("meeran_pms_ledger", JSON.stringify(LEDGER));
   window.render();
 };
 
@@ -325,16 +528,13 @@ window.populateRoomDropdown = function(selectedSlot) {
   var select = document.getElementById("inRoomSelect");
   if (!select) return;
   select.innerHTML = "";
-  
   HOSTEL_STRUCTURE.forEach(function(floor) {
     var optGroup = document.createElement("optgroup");
     optGroup.label = floor.floor;
-
     floor.rooms.forEach(function(room) {
       for (var b = 0; b < room.cap; b++) {
         var slotName = room.no + " - Bed " + BED_LETTERS[b];
-        var isOccupied = DB.some(function(x) { return x.status === "Active" && x.room === slotName; });
-        
+        var isOccupied = DB.some(function(x) { return x.status === "Active" && normalizeBedKey(x.room) === slotName; });
         var opt = document.createElement("option");
         opt.value = slotName;
         opt.textContent = slotName + (isOccupied ? " [Occupied]" : " [Available]");
@@ -374,11 +574,7 @@ window.renderFloorMap = function() {
       for (var b = 0; b < rm.cap; b++) {
         var letter = BED_LETTERS[b];
         var slotId = rm.no + " - Bed " + letter;
-        
-        var occ = DB.find(function(x) { 
-          if (!x || x.status === "Vacated") return false;
-          return normalizeBedKey(x.room) === slotId;
-        });
+        var occ = DB.find(function(x) { return x && x.status === "Active" && normalizeBedKey(x.room) === slotId; });
         occupiedInRoom.push({ bedLetter: letter, slotId: slotId, student: occ });
       }
 
@@ -389,46 +585,259 @@ window.renderFloorMap = function() {
         '<span class="room-num">Room ' + rm.no + ' <small style="font-weight:500;color:var(--mute)">(' + rm.type + ')</small></span>' +
         '<span class="room-cap ' + (isFull ? 'full' : 'vacant') + '">' +
           (isFull ? 'Full (' + occCount + '/' + rm.cap + ')' : (rm.cap - occCount) + ' Vacant (' + occCount + '/' + rm.cap + ')') +
-        '</span>' +
-      '</div>';
+        '</span></div>';
 
       var bedsHtml = '<div class="bed-slots">';
       occupiedInRoom.forEach(function(item) {
         if (item.student) {
           bedsHtml += '<div class="bed-slot occupied" onclick="window.viewHistory(' + item.student.id + ')">' +
-            '<div>' +
-              '<b>Bed ' + item.bedLetter + ':</b> ' + item.student.name +
-            '</div>' +
+            '<div><b>Bed ' + item.bedLetter + ':</b> ' + item.student.name + '</div>' +
             '<span class="badge ' + (item.student.due > 0 ? 'badge-due' : 'badge-clear') + '">' +
               (item.student.due > 0 ? 'Due ₹' + item.student.due : 'Paid') +
-            '</span>' +
-          '</div>';
+            '</span></div>';
         } else {
           bedsHtml += '<div class="bed-slot empty" onclick="window.admitToSlot(\'' + item.slotId + '\')">' +
             '<span>Bed ' + item.bedLetter + ': Empty</span>' +
-            '<span style="font-size:12px;font-weight:700;color:var(--green)">+ Admit</span>' +
-          '</div>';
+            '<span style="font-size:12px;font-weight:700;color:var(--green)">+ Admit</span></div>';
         }
       });
       bedsHtml += '</div>';
-
       roomCard.innerHTML = headerHtml + bedsHtml;
       grid.appendChild(roomCard);
     });
-
     container.appendChild(grid);
   });
 };
 
-window.openEditModal = function(id) {
-  var t = DB.find(function(x) { return x.id === id; });
+// ==========================================
+// FINANCIAL ANALYTICS ENGINE (MTD / QTD / FY)
+// ==========================================
+window.renderFinancials = function() {
+  var nowKeys = getFiscalKeysJS(new Date().toISOString().slice(0, 10));
+  var mtdRent = 0;
+  var qtdRent = 0;
+  var ytdRent = 0;
+  var totalDeposits = 0;
+
+  var monthMap = {};
+  var quarterMap = {
+    "Q1": { label: nowKeys.fyKey + " Q1", period: "Apr – Jun", rent: 0, dep: 0 },
+    "Q2": { label: nowKeys.fyKey + " Q2", period: "Jul – Sep", rent: 0, dep: 0 },
+    "Q3": { label: nowKeys.fyKey + " Q3", period: "Oct – Dec", rent: 0, dep: 0 },
+    "Q4": { label: nowKeys.fyKey + " Q4", period: "Jan – Mar", rent: 0, dep: 0 }
+  };
+
+  // Calculate expected monthly rent from active tenants
+  var activeExpectedMonthly = 0;
+  DB.forEach(function(t) {
+    if (t && t.status === "Active") {
+      activeExpectedMonthly += (Number(t.rent) || 0);
+      totalDeposits += (Number(t.deposit) || 0);
+    }
+  });
+
+  LEDGER.forEach(function(item) {
+    var amt = Number(item.amount) || 0;
+    var cat = String(item.category || "RENT").toUpperCase();
+    var fk = getFiscalKeysJS(item.date);
+    var mKey = item.monthKey || fk.monthKey;
+    var qKey = item.quarterKey || fk.quarterKey;
+    var fyKey = item.fyKey || fk.fyKey;
+
+    if (!monthMap[mKey]) monthMap[mKey] = { rent: 0, dep: 0 };
+
+    if (cat === "RENT") {
+      monthMap[mKey].rent += amt;
+      if (mKey === nowKeys.monthKey) mtdRent += amt;
+      if (qKey === nowKeys.quarterKey) qtdRent += amt;
+      if (fyKey === nowKeys.fyKey) ytdRent += amt;
+
+      if (fyKey === nowKeys.fyKey) {
+        var qNum = qKey.split(" ").pop();
+        if (quarterMap[qNum]) quarterMap[qNum].rent += amt;
+      }
+    } else if (cat === "DEPOSIT") {
+      monthMap[mKey].dep += amt;
+      if (fyKey === nowKeys.fyKey) {
+        var qNum2 = qKey.split(" ").pop();
+        if (quarterMap[qNum2]) quarterMap[qNum2].dep += amt;
+      }
+    }
+  });
+
+  // Always ensure current month exists in table
+  if (!monthMap[nowKeys.monthKey]) monthMap[nowKeys.monthKey] = { rent: 0, dep: 0 };
+
+  document.getElementById("finMTD").textContent = "₹" + mtdRent.toLocaleString("en-IN");
+  document.getElementById("finMTDLabel").textContent = "Month: " + nowKeys.monthKey;
+  document.getElementById("finQTD").textContent = "₹" + qtdRent.toLocaleString("en-IN");
+  document.getElementById("finQTDLabel").textContent = nowKeys.quarterKey;
+  document.getElementById("finYTD").textContent = "₹" + ytdRent.toLocaleString("en-IN");
+  document.getElementById("finYTDLabel").textContent = nowKeys.fyKey;
+  document.getElementById("finDeposits").textContent = "₹" + totalDeposits.toLocaleString("en-IN");
+
+  // Render Quarterly Table
+  var qBody = document.getElementById("quarterTableBody");
+  qBody.innerHTML = "";
+  ["Q1", "Q2", "Q3", "Q4"].forEach(function(qCode) {
+    var qObj = quarterMap[qCode];
+    var isCurrent = (qObj.label === nowKeys.quarterKey);
+    var tr = document.createElement("tr");
+    if (isCurrent) tr.style.background = "#eff6ff";
+    tr.innerHTML = 
+      '<td><b>' + qObj.label + (isCurrent ? ' (Active)' : '') + '</b></td>' +
+      '<td>' + qObj.period + '</td>' +
+      '<td style="color:var(--green);font-weight:700">₹' + qObj.rent.toLocaleString("en-IN") + '</td>' +
+      '<td style="color:var(--purple);font-weight:600">₹' + qObj.dep.toLocaleString("en-IN") + '</td>' +
+      '<td><b>₹' + (qObj.rent + qObj.dep).toLocaleString("en-IN") + '</b></td>';
+    qBody.appendChild(tr);
+  });
+
+  // Render Monthly Table
+  var mBody = document.getElementById("monthTableBody");
+  mBody.innerHTML = "";
+  var sortedMonths = Object.keys(monthMap).sort().reverse();
+  sortedMonths.forEach(function(mKey) {
+    var mObj = monthMap[mKey];
+    var eff = activeExpectedMonthly > 0 ? Math.min(100, Math.round((mObj.rent / activeExpectedMonthly) * 100)) : 0;
+    var tr = document.createElement("tr");
+    tr.innerHTML =
+      '<td><b>' + mKey + '</b></td>' +
+      '<td>₹' + activeExpectedMonthly.toLocaleString("en-IN") + '</td>' +
+      '<td style="color:var(--green);font-weight:800">₹' + mObj.rent.toLocaleString("en-IN") + '</td>' +
+      '<td style="color:var(--purple)">₹' + mObj.dep.toLocaleString("en-IN") + '</td>' +
+      '<td><span class="badge ' + (eff >= 80 ? 'badge-clear' : 'badge-due') + '">' + eff + '% Realized</span></td>';
+    mBody.appendChild(tr);
+  });
+
+  return mtdRent;
+};
+
+window.renderPaymentLogs = function() {
+  var tbody = document.getElementById("paymentLogBody");
+  if (!tbody) return;
+  tbody.innerHTML = "";
+
+  var sorted = LEDGER.slice().sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
+  if (sorted.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" style="color:var(--mute);text-align:center;padding:16px">No payment transactions logged yet. Click "+ Record Rent Payment" to add.</td></tr>';
+    return;
+  }
+
+  sorted.forEach(function(log) {
+    var isDep = String(log.category).toUpperCase() === "DEPOSIT";
+    var proofHtml = log.proofUrl ? '<a href="' + log.proofUrl + '" target="_blank" style="color:var(--acc);font-weight:700">📸 View Screenshot</a>' : (log.notes || 'Recorded');
+    var tr = document.createElement("tr");
+    tr.innerHTML = 
+      '<td>' + log.date + '</td>' +
+      '<td style="color:var(--acc);font-weight:700">' + log.room + '</td>' +
+      '<td><b>' + log.name + '</b></td>' +
+      '<td><span class="badge ' + (isDep ? 'badge-dep' : 'badge-clear') + '">' + log.category + '</span></td>' +
+      '<td><b>₹' + Number(log.amount).toLocaleString("en-IN") + '</b></td>' +
+      '<td>' + proofHtml + '</td>';
+    tbody.appendChild(tr);
+  });
+};
+
+window.openRecordPaymentModal = function(preselectId) {
+  var sel = document.getElementById("payModalTenant");
+  sel.innerHTML = "";
+  DB.filter(function(t) { return t && t.status === "Active"; }).forEach(function(t) {
+    var opt = document.createElement("option");
+    opt.value = t.id;
+    opt.textContent = t.room + " - " + t.name + " (Due: ₹" + (t.due || 0) + ")";
+    if (preselectId && Number(preselectId) === Number(t.id)) opt.selected = true;
+    sel.appendChild(opt);
+  });
+  document.getElementById("payModalDate").value = new Date().toISOString().slice(0, 10);
+  window.syncPayModalTenant();
+  document.getElementById("payModal").style.display = "flex";
+};
+
+window.syncPayModalTenant = function() {
+  var id = Number(document.getElementById("payModalTenant").value);
+  var t = DB.find(function(x) { return Number(x.id) === id; });
+  if (t) {
+    document.getElementById("payModalAmt").value = t.due > 0 ? t.due : t.rent;
+  }
+};
+
+window.submitManualPayment = async function() {
+  var id = Number(document.getElementById("payModalTenant").value);
+  var t = DB.find(function(x) { return Number(x.id) === id; });
   if (!t) return;
-  document.getElementById("editStudentId").value = id;
+
+  var dateStr = document.getElementById("payModalDate").value || new Date().toISOString().slice(0, 10);
+  var cat = document.getElementById("payModalCat").value;
+  var amt = parseFloat(document.getElementById("payModalAmt").value) || 0;
+  var notes = document.getElementById("payModalNotes").value.trim() || "Recorded by Owner";
+
+  if (amt <= 0) { alert("Enter a valid amount."); return; }
+
+  var fk = getFiscalKeysJS(dateStr);
+  LEDGER.push({
+    txnId: "TXN-" + Date.now(),
+    date: fk.dateStr,
+    monthKey: fk.monthKey,
+    quarterKey: fk.quarterKey,
+    fyKey: fk.fyKey,
+    room: t.room,
+    name: t.name,
+    category: cat,
+    amount: amt,
+    proofUrl: "",
+    notes: notes
+  });
+
+  if (cat === "RENT") {
+    t.due = Math.max(0, (Number(t.due) || 0) - amt);
+  } else if (cat === "DEPOSIT") {
+    t.deposit = (Number(t.deposit) || 0) + amt;
+  }
+
+  window.saveLocal();
+  document.getElementById("payModal").style.display = "none";
+  window.closeModal();
+
+  await window.pushCloudAction({
+    action: "ADMIN_RECORD_PAYMENT",
+    id: t.id,
+    room: t.room,
+    name: t.name,
+    category: cat,
+    amount: amt,
+    date: fk.dateStr,
+    notes: notes
+  });
+  alert("✅ ₹" + amt + " recorded in " + fk.monthKey + " Ledger!");
+};
+
+window.billNextMonth = async function(id) {
+  var t = DB.find(function(x) { return Number(x.id) === Number(id); });
+  if (!t) return;
+  t.due = (Number(t.due) || 0) + (Number(t.rent) || 0);
+  window.saveLocal();
+  window.closeModal();
+  await window.pushCloudAction({
+    action: "ADMIN_UPDATE_TENANT",
+    id: t.id, room: t.room, name: t.name, phone: t.phone,
+    rent: t.rent, deposit: t.deposit, joinDate: t.joinDate, due: t.due, status: t.status, email: t.email
+  });
+  alert("Added next month rent (₹" + t.rent + ") to " + t.name + "'s due.");
+};
+
+window.openEditModal = function(id) {
+  var t = DB.find(function(x) { return Number(x.id) === Number(id); });
+  if (!t) return;
+  document.getElementById("editStudentId").value = t.id;
   document.getElementById("editName").value = t.name || "";
   document.getElementById("editPhone").value = t.phone || "";
   document.getElementById("editRent").value = t.rent || 0;
   document.getElementById("editDue").value = t.due || 0;
+  document.getElementById("editDeposit").value = t.deposit || 0;
+  document.getElementById("editJoinDate").value = t.joinDate || "";
   document.getElementById("editRoom").value = t.room || "";
+  document.getElementById("editEmail").value = t.email || "";
   document.getElementById("editModal").style.display = "flex";
 };
 
@@ -436,44 +845,55 @@ window.closeEditModal = function() {
   document.getElementById("editModal").style.display = "none";
 };
 
-window.saveEditedProfile = function() {
-  var id = parseInt(document.getElementById("editStudentId").value);
-  var t = DB.find(function(x) { return x.id === id; });
+window.saveEditedProfile = async function() {
+  var id = Number(document.getElementById("editStudentId").value);
+  var t = DB.find(function(x) { return Number(x.id) === id; });
   if (!t) return;
 
   t.name = document.getElementById("editName").value.trim();
   t.phone = document.getElementById("editPhone").value.trim();
   t.rent = parseFloat(document.getElementById("editRent").value) || 0;
   t.due = parseFloat(document.getElementById("editDue").value) || 0;
+  t.deposit = parseFloat(document.getElementById("editDeposit").value) || 0;
+  t.joinDate = document.getElementById("editJoinDate").value;
   t.room = normalizeBedKey(document.getElementById("editRoom").value.trim());
+  t.email = document.getElementById("editEmail").value.trim();
 
   window.saveLocal();
-  alert("Bed allocation updated!");
   window.closeEditModal();
+  window.closeModal();
+
+  await window.pushCloudAction({
+    action: "ADMIN_UPDATE_TENANT",
+    id: t.id, room: t.room, name: t.name, phone: t.phone,
+    rent: t.rent, deposit: t.deposit, joinDate: t.joinDate, due: t.due, status: t.status, email: t.email
+  });
+  alert("✅ Tenant profile updated on local dashboard and Google Sheet!");
 };
 
 window.viewHistory = function(id) {
-  var t = DB.find(function(x) { return x.id === id; });
+  var t = DB.find(function(x) { return Number(x.id) === Number(id); });
   if (!t) return;
 
   document.getElementById("modalStudentName").textContent = t.name + " (" + t.room + ")";
-  
   var kycButtons = "";
   if (t.aadhaarLink) kycButtons += '<a href="' + t.aadhaarLink + '" target="_blank" class="btn btn-ghost btn-sm">📄 Aadhaar</a> ';
   if (t.panLink) kycButtons += '<a href="' + t.panLink + '" target="_blank" class="btn btn-ghost btn-sm">💳 PAN</a> ';
   if (t.orgIdLink) kycButtons += '<a href="' + t.orgIdLink + '" target="_blank" class="btn btn-ghost btn-sm">🎓 College/Work ID</a>';
 
-  var html = '<div style="background:var(--panel);padding:14px;border-radius:12px;font-size:13px;line-height:1.6">' +
-    '<b>Assigned Bed:</b> ' + t.room + '<br>' +
+  var html = '<div style="background:var(--panel);padding:14px;border-radius:12px;font-size:13px;line-height:1.7">' +
+    '<b>Assigned Bed:</b> ' + t.room + ' | <b>Joined:</b> ' + (t.joinDate || 'N/A') + '<br>' +
     '<b>Phone:</b> ' + t.phone + ' | <b>Parent:</b> ' + (t.parent || 'N/A') + '<br>' +
-    '<b>Age:</b> ' + (t.age || 'N/A') + ' | <b>College/Company:</b> ' + (t.orgName || 'N/A') + '<br>' +
-    '<b>Address:</b> ' + (t.address || 'N/A') + '<br>' +
-    '<b>Aadhaar:</b> ' + (t.aadhaar || 'N/A') + ' | <b>Deposit:</b> ₹' + t.deposit + '<br><br>' +
-    '<b>Documents:</b> ' + (kycButtons || 'None') +
+    '<b>Email:</b> ' + (t.email || 'Not saved') + '<br>' +
+    '<b>Agreed Rent:</b> ₹' + t.rent + '/mo | <b>Deposit Held:</b> ₹' + (t.deposit || 0) + '<br>' +
+    '<b>Current Pending Due:</b> <span style="color:' + (t.due > 0 ? 'var(--warn)' : 'var(--green)') + ';font-weight:800">₹' + (t.due || 0) + '</span><br><br>' +
+    '<b>KYC Files:</b> ' + (kycButtons || 'None') +
     '</div>' +
-    '<div style="margin-top:14px;display:flex;justify-content:space-between">' +
-      '<button class="btn btn-ghost btn-sm" onclick="window.openEditModal(' + t.id + ')">✏️ Edit Allocation</button>' +
-      '<button class="btn btn-danger btn-sm" onclick="window.deleteProfile(' + t.id + ')">🗑️ Delete</button>' +
+    '<div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">' +
+      '<button class="btn btn-green btn-sm" onclick="window.openRecordPaymentModal(' + t.id + ')">💰 Collect Rent</button>' +
+      '<button class="btn btn-primary btn-sm" onclick="window.billNextMonth(' + t.id + ')">+ Bill New Month</button>' +
+      '<button class="btn btn-ghost btn-sm" onclick="window.openEditModal(' + t.id + ')">✏️ Edit</button>' +
+      '<button class="btn btn-danger btn-sm" onclick="window.vacateTenant(' + t.id + ')">🚪 Vacate Bed</button>' +
     '</div>';
 
   document.getElementById("modalContent").innerHTML = html;
@@ -484,82 +904,135 @@ window.closeModal = function() {
   document.getElementById("historyModal").style.display = "none";
 };
 
-window.deleteProfile = function(id) {
-  if (confirm("Delete this occupant?")) {
-    DB = DB.filter(function(x) { return x.id !== id; });
+window.vacateTenant = async function(id) {
+  var t = DB.find(function(x) { return Number(x.id) === Number(id); });
+  if (!t) return;
+  if (confirm("Mark " + t.name + " as Vacated and free up bed " + t.room + "?")) {
+    t.status = "Vacated";
     window.saveLocal();
     window.closeModal();
+    await window.pushCloudAction({
+      action: "ADMIN_UPDATE_TENANT",
+      id: t.id, room: t.room, name: t.name, phone: t.phone,
+      rent: t.rent, deposit: t.deposit, joinDate: t.joinDate, due: t.due, status: "Vacated", email: t.email
+    });
   }
 };
 
-window.admitStudent = function() {
+window.admitStudent = async function() {
   var room = document.getElementById("inRoomSelect").value;
   var name = document.getElementById("inName").value.trim();
   var phone = document.getElementById("inPhone").value.trim();
   var rent = parseFloat(document.getElementById("inRent").value) || 0;
+  var deposit = parseFloat(document.getElementById("inDeposit").value) || 0;
+  var joinDate = document.getElementById("inDate").value || new Date().toISOString().slice(0, 10);
+  var email = document.getElementById("inEmail").value.trim();
+  var firstPaid = document.getElementById("inFirstRentPaid").value === "yes";
 
-  if (!room || !name) {
-    alert("Select Room & Bed and enter Name.");
-    return;
+  if (!room || !name) { alert("Select Bed and enter Student Name."); return; }
+
+  var newId = Date.now();
+  var initialDue = firstPaid ? 0 : rent;
+  var cleanRoom = normalizeBedKey(room);
+
+  var newStudent = {
+    id: newId, room: cleanRoom, name: name, phone: phone,
+    rent: rent, deposit: deposit, joinDate: joinDate, due: initialDue, status: "Active", email: email
+  };
+  DB.push(newStudent);
+
+  var fk = getFiscalKeysJS(joinDate);
+  if (deposit > 0) {
+    LEDGER.push({ txnId: "TXN-" + Date.now(), date: fk.dateStr, monthKey: fk.monthKey, quarterKey: fk.quarterKey, fyKey: fk.fyKey, room: cleanRoom, name: name, category: "DEPOSIT", amount: deposit, notes: "Onboarding Deposit" });
+  }
+  if (firstPaid && rent > 0) {
+    LEDGER.push({ txnId: "TXN-" + (Date.now() + 1), date: fk.dateStr, monthKey: fk.monthKey, quarterKey: fk.quarterKey, fyKey: fk.fyKey, room: cleanRoom, name: name, category: "RENT", amount: rent, notes: "First Month Rent" });
   }
 
-  DB.push({
-    id: Date.now(),
-    room: normalizeBedKey(room),
-    name: name,
-    phone: phone,
-    rent: rent,
-    due: rent,
-    status: "Active"
-  });
-
   window.saveLocal();
-  alert("Admitted into " + room);
+  await window.pushCloudAction({
+    action: "ADMIN_UPDATE_TENANT",
+    id: newId, room: cleanRoom, name: name, phone: phone,
+    rent: rent, deposit: deposit, joinDate: joinDate, due: initialDue, status: "Active", email: email
+  });
+  if (firstPaid && rent > 0) {
+    await window.pushCloudAction({
+      action: "ADMIN_RECORD_PAYMENT",
+      id: newId, room: cleanRoom, name: name, category: "RENT", amount: rent, date: fk.dateStr, notes: "First Month Rent"
+    });
+  }
+
+  alert("✅ Admitted " + name + " into " + cleanRoom);
   window.switchTab('map');
+};
+
+window.exportFinancialCSV = function() {
+  var csv = "Txn ID,Date,Month,Quarter,Financial Year,Bed Slot,Tenant Name,Category,Amount,Notes\n";
+  LEDGER.forEach(function(r) {
+    csv += '"' + (r.txnId || '') + '","' + r.date + '","' + r.monthKey + '","' + r.quarterKey + '","' + r.fyKey + '","' + r.room + '","' + r.name + '","' + r.category + '",' + r.amount + ',"' + (r.notes || '') + '"\n';
+  });
+  var blob = new Blob([csv], { type: "text/csv" });
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "Meeran_Bhavan_Financial_Ledger_" + new Date().toISOString().slice(0, 10) + ".csv";
+  a.click();
 };
 
 window.render = function() {
   var activeList = document.getElementById("rosterList");
-  if (!activeList) return;
+  var pastList = document.getElementById("pastList");
+  if (!activeList || !pastList) return;
   activeList.innerHTML = "";
+  pastList.innerHTML = "";
 
   var activeCount = 0;
   var totalDues = 0;
-  var totalPaid = 0;
 
   DB.forEach(function(t) {
-    if (t.status !== "Vacated") {
+    if (!t) return;
+    if (t.status === "Active") {
       activeCount++;
-      totalDues += (t.due || 0);
-      if (t.due === 0) totalPaid += (t.rent || 0);
-
+      totalDues += (Number(t.due) || 0);
       var el = document.createElement("div");
       el.className = "tenant-card";
       el.innerHTML = 
         '<div class="tc-head"><span class="tc-name">' + t.name + '</span><span class="tc-room">' + t.room + '</span></div>' +
-        '<div class="tc-body">📱 ' + t.phone + ' | Rent: ₹' + t.rent + ' | <span class="badge ' + (t.due > 0 ? 'badge-due' : 'badge-clear') + '">' + (t.due > 0 ? 'Due ₹' + t.due : 'Paid') + '</span></div>' +
+        '<div class="tc-body">' +
+          '📱 ' + t.phone + ' | Joined: <b>' + (t.joinDate || 'N/A') + '</b> | Rent: ₹' + t.rent + '/mo<br>' +
+          'Deposit Held: ₹' + (t.deposit || 0) + ' | ' +
+          '<span class="badge ' + (t.due > 0 ? 'badge-due' : 'badge-clear') + '">' + (t.due > 0 ? 'Due ₹' + t.due : 'Paid') + '</span>' +
+        '</div>' +
         '<div class="tc-actions">' +
-          '<button class="btn btn-ghost btn-sm" onclick="window.viewHistory(' + t.id + ')">📜 Details</button>' +
-          '<button class="btn btn-ghost btn-sm" onclick="window.openEditModal(' + t.id + ')">✏️ Change Bed</button>' +
+          '<button class="btn btn-green btn-sm" onclick="window.openRecordPaymentModal(' + t.id + ')">💰 Collect Rent</button>' +
+          '<button class="btn btn-ghost btn-sm" onclick="window.viewHistory(' + t.id + ')">📜 Details & KYC</button>' +
+          '<button class="btn btn-ghost btn-sm" onclick="window.openEditModal(' + t.id + ')">✏️ Edit</button>' +
         '</div>';
       activeList.appendChild(el);
+    } else if (t.status === "Vacated") {
+      var pel = document.createElement("div");
+      pel.className = "tenant-card";
+      pel.innerHTML = '<div class="tc-head"><span class="tc-name">' + t.name + ' (Vacated)</span><span class="tc-room">' + t.room + '</span></div>' +
+        '<div class="tc-body">📱 ' + t.phone + ' | Joined: ' + (t.joinDate || 'N/A') + '</div>';
+      pastList.appendChild(pel);
     }
   });
 
+  var mtdCollected = window.renderFinancials();
   var TOTAL_BEDS = 27;
   document.getElementById("stBeds").textContent = activeCount + "/" + TOTAL_BEDS;
   document.getElementById("stVacant").textContent = (TOTAL_BEDS - activeCount);
   document.getElementById("stDues").textContent = "₹" + totalDues.toLocaleString("en-IN");
-  document.getElementById("stPaid").textContent = "₹" + totalPaid.toLocaleString("en-IN");
+  document.getElementById("stPaid").textContent = "₹" + mtdCollected.toLocaleString("en-IN");
 
   window.renderFloorMap();
+  window.renderPaymentLogs();
 };
 
 window.backupJSON = function() {
-  var blob = new Blob([JSON.stringify(DB, null, 2)], { type: "application/json" });
+  var blob = new Blob([JSON.stringify({ tenants: DB, ledger: LEDGER }, null, 2)], { type: "application/json" });
   var a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = "Meeran_Bhavan_Backup.json";
+  a.download = "Meeran_Bhavan_Full_Backup.json";
   a.click();
 };
 
@@ -569,7 +1042,9 @@ window.importJSON = function(event) {
   var reader = new FileReader();
   reader.onload = function(e) {
     try {
-      DB = JSON.parse(e.target.result);
+      var parsed = JSON.parse(e.target.result);
+      if (Array.isArray(parsed)) { DB = parsed; }
+      else if (parsed.tenants) { DB = parsed.tenants; LEDGER = parsed.ledger || []; }
       window.saveLocal();
       alert("Restored!");
     } catch(err) { alert("Invalid file"); }
